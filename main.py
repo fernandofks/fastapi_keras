@@ -1,40 +1,39 @@
 import tensorflow as tf
-
 from fastapi import FastAPI
 from pydantic import BaseModel
-
-import numpy 
-
-class TypedArray(numpy.ndarray):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_type
-
-    @classmethod
-    def validate_type(cls, val):
-        return numpy.array(val, dtype=cls.inner_type)
-
-class ArrayMeta(type):
-    def __getitem__(self, t):
-        return type('Array', (TypedArray,), {'inner_type': t})
-
-class Array(numpy.ndarray, metaclass=ArrayMeta):
-    pass
+import numpy as np
+import ast
 
 MODEL = tf.keras.models.load_model('model/')
 
 app = FastAPI()
 
 class UserInput(BaseModel):
-    user_input: Array[float]
-
+    user_input: str
 @app.get('/')
 async def index():
     return {"Message": "This is Index"}
 
-@app.post('/predict/')
+@app.post('/predict/') 
 async def predict(UserInput: UserInput):
-
-    prediction = MODEL.predict([UserInput.user_input])
+    input = np.array([[[0.08, 0.14, 0.09, 0.18],
+       [0.08, 0.14, 0.09, 0.22],
+       [0.08, 0.14, 0.08, 0.17],
+       [0.08, 0.14, 0.08, 0.1 ],
+       [0.08, 0.14, 0.07, 0.08],
+       [0.08, 0.14, 0.07, 0.08],
+       [0.09, 0.2 , 0.07, 0.08],
+       [0.1 , 0.32, 0.07, 0.07],
+       [0.1 , 0.29, 0.07, 0.07],
+       [0.09, 0.24, 0.07, 0.07]]])
+    
+    lista_string=UserInput.user_input
+    lista= ast.literal_eval(lista_string)
+    input = np.insert(input[0], 0,lista).reshape(1,11,4)
+    input = input[:,:-1,:]
+    prediction = MODEL.predict(input)
+    
 
     return {"prediction": float(prediction)}
+
+
