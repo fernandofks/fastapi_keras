@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import numpy as np
 import ast
 
-MODEL = tf.keras.models.load_model('model/')
+MODEL = tf.keras.models.load_model('model.h5')
 
 app = FastAPI()
 input = np.array([[[0.08, 0.14, 0.09, 0.18],
@@ -20,7 +20,7 @@ input = np.array([[[0.08, 0.14, 0.09, 0.18],
 # class UserInput(BaseModel):
 #     user_input: str
 @app.get('/{UserInput}')
-async def predict(UserInput):
+async def predicting(UserInput):
     global input
     lista_string=UserInput
     lista= ast.literal_eval(lista_string)
