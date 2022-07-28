@@ -24,8 +24,8 @@ async def predicting(UserInput):
     global input
     lista_string=UserInput
     lista= ast.literal_eval(lista_string)
-    input = np.insert(input[0], 0,lista).reshape(1,11,4)
-    input = input[:,:-1,:]
+    input = np.append(input[0],[lista],axis=0).reshape(1,11,4)
+    input = input[:,1:,:]
     prediction = MODEL.predict(input)
     return {"prediction": float(prediction)}
 
