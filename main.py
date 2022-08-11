@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import numpy as np
 import ast
+import time
 
 MODEL = tf.keras.models.load_model('model.h5')
 
@@ -21,6 +22,7 @@ input = np.array([[[ 0.17,  0.13,  0.75, -0.26,  0.07,  0.08,  4.75,  0.02],
 #     user_input: str
 @app.get('/{UserInput}')
 async def predicting(UserInput):
+    start_time=time.time()
     global input
     lista_string=UserInput
     lista= ast.literal_eval(lista_string)
@@ -28,7 +30,9 @@ async def predicting(UserInput):
     input = input[:,1:,:]
     prediction = MODEL.predict(input)
     vel = np.argmax(prediction)
-    print(vel)
+    print(input)
+    process_time = time.time() - start_time
+    print(process_time)
     return {"prediction": float(vel/2)}
 
 # @app.post('/predict/') 
