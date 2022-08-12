@@ -33,7 +33,7 @@ async def predicting(UserInput):
     print(input)
     process_time = time.time() - start_time
     print(process_time)
-    return {"prediction": float(vel/2)}
+    return {"prediction": float(vel/2)} 
 
 # @app.post('/predict/') 
 # async def predict(UserInput: UserInput):
