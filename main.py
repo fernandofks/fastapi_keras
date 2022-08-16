@@ -28,6 +28,7 @@ async def predicting(UserInput):
     lista= ast.literal_eval(lista_string)
     input = np.append(input[0],[lista],axis=0).reshape(1,11,6)
     input = input[:,1:,:]
+    input=np.diff(input, axis=1)
     prediction = MODEL.predict(input)
     vel = np.argmax(prediction)
     print(input)
