@@ -19,7 +19,7 @@ input = np.array([[[-0.198,  0.629,  0.259,  0.094,  0.628,  0.307,-0.198,  0.62
 #     user_input: str
 @app.get('/{UserInput}')
 async def predicting(UserInput):
-    start_time=time.time()
+    # start_time=time.time()
     global input
     lista_string=UserInput
     lista= ast.literal_eval(lista_string)
@@ -31,15 +31,15 @@ async def predicting(UserInput):
     input_diff[:,:, 4] = input_rot[:,:, 1]
     input_diff[:,:, 5] = input_rot[:,:, 2]
     input_diff[:,:, 6] = input_rot[:,:, 3]
-    input_diff[:,:, 10] = input_rot[:, :,4]
+    input_diff[:,:, 10] = input_rot[:,:,4]
     input_diff[:,:, 11] = input_rot[:,:, 5]
     input_diff[:,:, 12] = input_rot[:,:, 6]
     input_diff[:,:, 13] = input_rot[:,:, 7]
     prediction = MODEL.predict(input_diff)
     vel = np.argmax(prediction, axis=1)
-    process_time = time.time() - start_time
-    print(process_time)
-    return {"prediction": int(vel)}
+    # process_time = time.time() - start_time
+    # print(process_time)
+    return {"prediction": float(vel)}
 
 # @app.post('/predict/') 
 # async def predict(UserInput: UserInput):
