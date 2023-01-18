@@ -35,6 +35,7 @@ async def predicting(UserInput):
     input_diff[:,:, 11] = input_rot[:,:, 5]
     input_diff[:,:, 12] = input_rot[:,:, 6]
     input_diff[:,:, 13] = input_rot[:,:, 7]
+    print(input_diff)
     prediction = MODEL.predict(input_diff)
     vel = np.argmax(prediction, axis=1)
     # process_time = time.time() - start_time
